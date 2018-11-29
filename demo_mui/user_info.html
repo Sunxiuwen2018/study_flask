@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/mui.css" />
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">用户详情</h1>
+		</header>
+
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="user">
+					</a>
+				</li>
+
+			</ul>
+		</div>
+
+		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+			// 页面初始化
+			var sdata = null;
+			mui.plusReady(function() {
+				sdata = plus.webview.currentWebview()
+				console.log(JSON.stringify(sdata))
+				//{"__view_array__":[],"__IDENTITY__":"NWindow","__uuid__":"NWindow91543495432206","__callbacks__":{"back":[null],"menu":[null]},"__callback_id__":"plus41543495432852","id":"user_info.html","name":"python"} at user_info.html:35
+				document.getElementById("user").innerText = sdata.name
+			})
+
+			// 当点击用户名时，向其它页面传递事件，如让其弹出文本框
+			// Uncaught ReferenceError: plus is not defined (提示: 请在plus ready后再调用plus api)
+			document.getElementById('user').addEventListener('tap', function() {
+//				var new_webview = plus.webview.getWebviewById("home.html")
+				var new_webview = plus.webview.getWebviewById("HBuilder")
+				mui.fire(new_webview, "show_alert", {
+					username: sdata.name
+				})
+			})
+		</script>
+	</body>
+
+</html>

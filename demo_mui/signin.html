@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/mui.css" />
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">SignIn</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>用户名</label>
+					<input type="text" class="mui-input-clear" id="username" placeholder="请输入用户名">
+				</div>
+				<div class="mui-input-row">
+					<label>密码</label>
+					<input type="password" class="mui-input-password" id="pwd" placeholder="请输入密码">
+				</div>
+				<div class="mui-button-row">
+					<button type="button" class="mui-btn mui-btn-primary" id="signin_btn">登录</button>
+					<button type="button" class="mui-btn mui-btn-success" id="signup_btn">注册</button>
+				</div>
+			</form>
+
+		</div>
+
+	</body>
+	<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init()
+
+		// 点击登录向后台发ajax
+		document.getElementById('signin_btn').addEventListener('tap', function() {
+			var username = document.getElementById("username").value;
+			var pwd = document.getElementById("pwd").value
+
+			// mui封装的ajax发post请求
+			mui.post('http://192.168.19.17:9000/signin', {
+				"username": username,
+				"password": pwd
+			}, function(data) {
+				//服务器返回响应，根据响应结果，分析是否登录成功；
+				console.log(data)
+				console.log(JSON.stringify(data))
+
+				mui.toast(data.msg);
+				// 如果登录成功，则跳转到用户页面，将用户名传给用户页面
+				if(data.code == 1000) {
+					mui.openWindow({
+						// 该函数用户跳转页面
+						url: "user_info.html",
+						id: "user_info.html",
+						styles: {
+							top: '0px', //mui标题栏默认高度为45px；
+							bottom: '45px' //默认为0px，可不定义；
+						},
+						extras:{
+							name:data.data.username
+						}
+					})
+				}
+
+			}, 'json');
+
+		})
+	</script>
+
+</html>

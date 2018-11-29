@@ -1,0 +1,16 @@
+{
+	"index.html": {
+		"resources": [
+			"home.html"
+		],
+		"refer": [
+			"home.html",
+			"signin.html"
+		]
+	},
+	"signin.html": {
+		"refer": [
+			"user_info.html"
+		]
+	}
+}

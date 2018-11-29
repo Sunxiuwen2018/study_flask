@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Document</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/mui.css" />
+	</head>
+
+	<body>
+		<!--底部mta-->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="mui-icon mui-icon-phone"></span>
+				<span class="mui-tab-label">电话</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="mui-icon mui-icon-email"></span>
+				<span class="mui-tab-label">邮件</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">设置</span>
+			</a>
+			<a class="mui-tab-item" id="open_signin">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">登录</span>
+			</a>
+		</nav>
+
+	</body>
+	<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//让子页面在index中显示
+		mui.init({
+			subpages: [{
+				url: 'home.html',
+				id: 'home.html',
+				styles: {
+					top: '0px', //mui标题栏默认高度为45px；
+					bottom: '45px' //默认为0px，可不定义；
+				}
+			}]
+		});
+
+		// 原生事件绑定 ---点击登录，打开登录页面
+		document.getElementById("open_signin").addEventListener("tap", function() {
+			mui.openWindow({
+				url: "signin.html",
+				id: "signin.html",
+				styles: {
+					top: '0px', //mui标题栏默认高度为45px；
+					bottom: '45px' //默认为0px，可不定义；
+				}
+			})
+		})
+		
+		
+		// 子页面向主页发送事件
+		// 整个页面都没有index的id，它是一打开就有了，它的id为
+		document.addEventListener("show_alert", function(data){
+			// 测试看看当前页面的所有信息
+			var s = plus.webview.currentWebview()
+			console.log(JSON.stringify(s))
+			
+			
+			// 下面为其它页面为主页发的事件，fire
+			alert(data.detail.username)
+		})
+		
+		
+		
+		
+	</script>
+
+</html>
