@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+
+</head>
+<body>
+<form action="/login" method="post">
+    {% if msg_dic.get('msg') %}
+        <p>{{ msg_dic['msg'] }}</p>
+    {% endif %}
+    <label for="username">用户名</label>
+    <input type="text" name="username" id="username">
+    <label for="password">密码</label>
+    <input type="password" name="password" id="password">
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chat</title>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container" style="margin-top: 50px">
+    <div class="row">
+        <div class="col-lg-3">
+            <ul id="friend_list" style="background-color: #3c3c3c;color: white">
+                <li><input type="checkbox" name="friend_name" value="zhangshan">张三</li>
+                <li><input type="checkbox" name="friend_name" value="lisi">李四</li>
+                <li><input type="checkbox" name="friend_name" value="python">派神</li>
+                <li><input type="checkbox" name="friend_name" value="java">加瓦</li>
+            </ul>
+        </div>
+        <div class="col-lg-6">
+            <div id="content" style="height: 300px;background-color: #1b6d85">
+                展示聊天信息
+            </div>
+            <div style="height: 50px;background-color: greenyellow;">
+                <p>Msg:<input style="height: 33%;" type="text" name="msg"/></p>
+                <input type="button" value="发送" onclick="sendMsg();">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    $(function () {
+        // 一带开网页就自动发送ajax，获取用户朋友信息，动态创建
+
+    })
+
+
+    var ws = new WebSocket('ws://127.0.0.1:5000/single_ws');
+    ws.onmessage = function (result) {
+        var ptag = $('<p>');
+        ptag.css({'text-align':'left','color':'red'});
+        ptag.text(result.data);
+        $('#content').append(ptag);
+        {#console.log('接收到的消息：',result.data)#}
+    };
+
+    function sendMsg() {
+        var msgs = $('input[name="msg"]').val();
+        var ptag = $('<p>');
+        ptag.css({'text-align':'right','color':'red'});
+        ptag.text(msgs);
+        $('#content').append(ptag);
+        {#console.log('要发送的信息：',msgs);#}
+
+        var friend_name = new Array()
+        $('input[name="friend_name"]:checked').each(function (i) {
+            friend_name[i] = $(this).val()
+        });
+
+        console.log('想发给的用户朋友：',friend_name);
+        msg_json = {'to_friend':friend_name, 'msg':msgs};
+        {#console.log(msg_json);#}
+        ws.send(JSON.stringify(msg_json))
+    }
+
+</script>
+
+
+</html>
